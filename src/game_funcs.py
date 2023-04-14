@@ -5,18 +5,20 @@ from moving_box import *
 from colors import *
 import camera as cam
 
-def moving_box(sq_box: box.Box):
+def moving_box(sq_box: box.Box):    ##todo: controls must be in arr, and taken form settings.py
     if sq_box.is_static:
         return None
     
     a = 20
-    jump_a = -250
+    jump_a = -20
+
+    # sq_box.flag_on_earth = True     #for editing map
 
     if pygame.key.get_pressed()[pygame.K_w] and sq_box.flag_on_earth:
-        sq_box.velocity.y = -20
+        sq_box.velocity.y = jump_a
     if pygame.key.get_pressed()[pygame.K_s]:
         # sq_box.velocity.y += a
-        sq_box.rect.y += 1
+        sq_box.rect.y += -jump_a
     if pygame.key.get_pressed()[pygame.K_a]:
         # sq_box.velocity.x -= a
         sq_box.rect.x -= a
@@ -30,7 +32,6 @@ def moving_box(sq_box: box.Box):
 def handle_moving_obj(moving_obj: box.Box):
     moving_obj.rect.x += moving_obj.velocity.x
     moving_obj.rect.y += moving_obj.velocity.y
-
 
 def is_overlap(box1:box.Box, box2:box.Box) -> int:
     rect1 = box1.rect

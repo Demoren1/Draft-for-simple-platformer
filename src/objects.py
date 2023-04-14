@@ -9,6 +9,7 @@ WIDTH = 1920
 HEIGHT = 1080
 
 a = 0.5
+# a = 0             #for editing map
 
 my_box = Moving_box(Rect(3000, 700, 50, 150), BLUE, Vector2(0, 0), 10)
 my_box.is_static = False

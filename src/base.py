@@ -6,7 +6,7 @@ from colors import *
 from objects import *
 import editor
 
-def handle_moving_box(screen:pygame.display):
+def handle_moving_box():
     my_box.velocity.y += a
 
     moving_box(my_box)

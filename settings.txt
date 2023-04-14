@@ -1,0 +1,11 @@
+w - jump
+a - go left
+d - go right
+s - go down
+
+e - turn on/off edit mode
+lmb - start adding rect
+p - save to file
+o - to del last box
+
+lmb - shoot 
