@@ -1,3 +1,7 @@
+from box import *
+from pygame import Color
+import pygame
+
 RED = (255, 0, 0)
 GREEN = (0, 255, 0)
 BLUE = (0, 0, 255)
@@ -22,4 +26,9 @@ Teal    = (000,128,128)
 White   = (255,255,255)
 Yellow  = (255,255,000)
 
-colors_arr = ['grey', Aqua, Black, Blue, Fuchsia, Gray, Green, Lime, Maroon, Navy, Olive, Purple ,Red, Silver, Teal, White, Yellow]
+colors_arr = [Aqua, Black, Blue, Fuchsia, Gray, Green, Lime, Maroon, Navy, Olive, Purple ,Red, Silver, Teal, White, Yellow]
+pallete = []
+
+for i in range(16):
+    tmp_box = Box(pygame.Rect(40 * (i % 4) + 5, 40 * (i // 4), 40, 40), colors_arr[i], (0, 0), 0)
+    pallete.append(tmp_box)

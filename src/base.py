@@ -29,7 +29,7 @@ def handle_moving_box():
 
     return my_box
 
-def draw_objects(screen):
-    for object in drawable_objects:
+def draw_objects(screen, draw_objects):
+    for object in draw_objects:
         
         draw_box(screen, object)

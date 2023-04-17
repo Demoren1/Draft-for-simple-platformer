@@ -5,6 +5,7 @@ import camera as cam
 from box import *
 from colors import *
 import objects
+import clicking_on_object
 
 class Editor:
     def __init__(self, drawning, start_pos, end_pos, arr_of_tmp_boxes):
@@ -23,7 +24,7 @@ class Editor:
             self.start_pos = list(pygame.mouse.get_pos())
             self.start_pos = check_for_scale(self.start_pos, camera)
 
-        if event.type == pygame.MOUSEBUTTONUP:
+        if event.type == pygame.MOUSEBUTTONUP and self.tmp_box != None:
             self.drawning = False
             self.arr_of_tmp_boxes.append(self.tmp_box)
 
@@ -66,10 +67,11 @@ class Editor:
     def del_box_from_arr(self):
         self.arr_of_tmp_boxes.pop()
 
-    def change_color(self):
+    def change_color(self, color: tuple):
         box = self.arr_of_tmp_boxes[-1]
-        box.color = colors_arr[self.current_color % len(colors_arr)]
-        self.current_color += 1
+        box.color = color
+        # self.arr_of_tmp_boxes.pop()
+        self.current_color = color
 
 def check_for_scale(pos: list, camera: cam.Camera):
     if camera.scaled < 0:
@@ -92,8 +94,22 @@ def add_boxes_to_arrays(adding_boxes, static_scene, all_objects, drawable_object
         all_objects.append(box)
         drawable_objects.append(box)
 
-def check_is_need_edit(event, camera, editor: Editor):
-    
+def check_is_need_edit(event, camera, editor: Editor, clicker: clicking_on_object.Clicker):
+    if not interact_ui(event, camera, editor, clicker):
+        interact_with_scene(event, camera, editor, clicker)
+
+def interact_ui(event, camera, editor: Editor, clicker: clicking_on_object.Clicker):
+    if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1 and editor.arr_of_tmp_boxes != []:
+        clicker.get_clicked_obj(event, pallete)
+        tmp_box = clicker.clicked_obj
+        print(editor.arr_of_tmp_boxes)
+        if tmp_box in pallete:
+            editor.change_color(tmp_box.color)
+            editor.tmp_box = None
+            return True
+    return False
+
+def interact_with_scene(event, camera, editor: Editor, clicker: clicking_on_object.Clicker):
     if event.type == pygame.KEYDOWN and pygame.key.get_pressed()[pygame.K_e]:
         editor.editing_flag = not editor.editing_flag
     if editor.editing_flag:
@@ -112,6 +128,3 @@ def check_is_need_edit(event, camera, editor: Editor):
 
     if event.type == pygame.KEYDOWN and pygame.key.get_pressed()[pygame.K_o] and editor.arr_of_tmp_boxes != []:
         editor.del_box_from_arr()
-
-    if event.type == pygame.KEYDOWN and pygame.key.get_pressed()[pygame.K_i] and editor.arr_of_tmp_boxes != []:
-        editor.change_color()

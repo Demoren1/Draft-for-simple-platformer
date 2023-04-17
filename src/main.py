@@ -5,6 +5,8 @@ from editor import *
 import base
 import camera as cam
 import objects
+import clicking_on_object
+import colors as color
 
 WIDTH = 1920
 HEIGHT = 1080
@@ -13,9 +15,8 @@ camera_w = 1920
 camera_h = 1080
 
 def main():
-    # edit_result = [False, None, None, None]     #[drawning, start_pos, end_pos, tmp_rect] tmp rect for adding ot massive of all
-
     editor = Editor(False, None, None, [])
+    clicker = clicking_on_object.Clicker()
 
     pygame.init()
     
@@ -23,6 +24,7 @@ def main():
     screen1 = pygame.display.set_mode((WIDTH,HEIGHT))
     screen = pygame.Surface((WIDTH, HEIGHT))
     camera = cam.Camera(pygame.Rect(0, 0, camera_w, camera_h))
+
     while True:
         my_COCK.tick(60)
 
@@ -31,18 +33,19 @@ def main():
         shift = camera.offset_obj_camera(Vector2(my_box.rect.x, my_box.rect.y), base.all_objects)
         camera.offset_camera(Vector2(my_box.rect.x, my_box.rect.y))
 
-        base.draw_objects(screen)
+        base.draw_objects(screen, objects.drawable_objects)
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
             check_is_need_shoot(event, my_box, camera, editor.editing_flag)
             screen = check_is_need_scale(event, screen, camera)
-            check_is_need_edit(event, camera, editor)
-
+            check_is_need_edit(event, camera, editor,  clicker)
+            clicker.get_clicked_obj(event, objects.all_objects)
         editor.handle_edit_result(screen, shift)
 
-        scaled_screen = pygame.transform.scale(screen, (1920, 1080)) 
+        scaled_screen = pygame.transform.scale(screen, (1920, 1080))
+        base.draw_objects(scaled_screen, color.pallete)
         pygame.Surface.blit(screen1, scaled_screen, (0, 0))
         pygame.display.update()
         screen.fill('grey')
